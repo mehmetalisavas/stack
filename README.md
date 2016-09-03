@@ -7,3 +7,9 @@ Three basic operations are performed in the stack:
 - Push: Adds an item in the stack.
 - Pop: Removes an item from the stack.If the stack is empty, then it return nil value.
 - Peek: Get the topmost item.
+
+# Example
+
+```
+
+```
