@@ -1,7 +1,7 @@
 # Stack 
 
 Supported with concurrency written in Go.
-You can use stack implementation with goroutines easily.
+You can use stack implementation supported with goroutines easily.
 
 # Stack Description
 
