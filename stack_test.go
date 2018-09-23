@@ -1,6 +1,9 @@
 package stack
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
 func TestNewStack(t *testing.T) {
 	stack := NewStack()
@@ -101,4 +104,61 @@ func TestPushPop(t *testing.T) {
 		t.Fatal("First item of stack should be 'data'")
 	}
 
+}
+
+func TestStackPushConcurrency(t *testing.T) {
+	stack := NewStack()
+
+	workerNumber := 30
+
+	var wg sync.WaitGroup
+	for i := 0; i < workerNumber; i++ {
+		wg.Add(1)
+		go func(num int) {
+			stack.Push(num)
+			wg.Done()
+		}(i)
+	}
+	wg.Wait()
+
+	if stack.count != workerNumber {
+		t.Fatalf("stack count should %d", workerNumber)
+	}
+
+	if len(stack.v) != workerNumber {
+		t.Fatalf("stack length should %d", workerNumber)
+	}
+}
+
+func testStackPush(workerNumber int) {
+	stack := NewStack()
+
+	for i := 0; i < workerNumber; i++ {
+		stack.Push(i)
+	}
+}
+
+func testStackPushConcurrency(workerNumber int) {
+	stack := NewStack()
+
+	var wg sync.WaitGroup
+	for i := 0; i < workerNumber; i++ {
+		wg.Add(1)
+		go func(num int) {
+			stack.Push(num)
+			wg.Done()
+		}(i)
+	}
+	wg.Wait()
+}
+
+func BenchmarkStackPushConcurrency(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		testStackPushConcurrency(30)
+	}
+}
+func BenchmarkStackPush(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		testStackPush(30)
+	}
 }
