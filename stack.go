@@ -1,4 +1,4 @@
-// stack package implements the stack with array
+// stack package implements the stack with array supported with concurrency
 package stack
 
 import "sync"
@@ -7,21 +7,22 @@ import "sync"
 // stacks uses orded LIFO(Last In First Out) or FILO(First In Last Out).
 //
 type Stack struct {
+	// mutex satisfy the synchronization for stack usage in goroutines
+	mu *sync.RWMutex
+
 	// v holds the stack values as an interface array
 	// so, we can add any kind of item into the list.
 	v []interface{}
 
 	// count holds the stack lenght inside the Stack struct
 	count int
-
-	// mutex satisfy the synchronization for stack usage in goroutines
-	mu sync.RWMutex
 }
 
 // NewStack inits the stack
 func NewStack() *Stack {
 	return &Stack{
-		v: make([]interface{}, 0),
+		v:  make([]interface{}, 0),
+		mu: &sync.RWMutex{},
 	}
 }
 
