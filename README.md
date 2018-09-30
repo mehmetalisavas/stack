@@ -18,6 +18,7 @@ Three basic operations are performed in the stack:
 ```go
 	stack := NewStack() //creates a new stack
 
+	// Push method supports all types of values.
 	stack.Push("data") // pushes into the stack 'data' value (stack count size : 1)
 	stack.Push(1) // pushes into the stack '1' value (stack count size : 2)
 	stack.Push(true) // pushes into the stack 'true' value (stack count size : 3)
